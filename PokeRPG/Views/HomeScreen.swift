@@ -8,7 +8,6 @@ struct HomeScreen: View {
             HStack{
                 Spacer()
             VStack{
-                
                 Spacer()
                 Text("PokeRPG").font(.largeTitle).foregroundColor(.black)
                     .onAppear{ PokeAPI().fetchData(){ pokemon in
@@ -17,7 +16,7 @@ struct HomeScreen: View {
                         }
                     }}
                 Spacer()
-                NavigationLink(destination: ContentView(), isActive:$wasClicked){EmptyView()}
+                NavigationLink(destination: BattleScreen(), isActive:$wasClicked){EmptyView()}
                 Button("Get Started!",action:{wasClicked = true
                 }).buttonStyle(.borderedProminent).tint(Color.red)
                 Spacer()

@@ -15,6 +15,7 @@ struct Pokemon {
     var DEF = 0
     var spATK = 0
     var spDEF = 0
+    var SPD = 0
     var type1 = ""
     var type2:String? = ""
     var Move1 = Moves()
