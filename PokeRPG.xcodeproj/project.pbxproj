@@ -14,6 +14,9 @@
 		085632B42A2FFBE3000C25DD /* PokeRPGTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085632B32A2FFBE3000C25DD /* PokeRPGTests.swift */; };
 		085632BE2A2FFBE3000C25DD /* PokeRPGUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085632BD2A2FFBE3000C25DD /* PokeRPGUITests.swift */; };
 		085632C02A2FFBE3000C25DD /* PokeRPGUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085632BF2A2FFBE3000C25DD /* PokeRPGUITestsLaunchTests.swift */; };
+		085632CD2A30099D000C25DD /* Pokemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085632CC2A30099D000C25DD /* Pokemon.swift */; };
+		088F05752A30C21D00596024 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088F05742A30C21D00596024 /* HomeScreen.swift */; };
+		4F38654A2A340B7B007DF592 /* PokeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3865492A340B7B007DF592 /* PokeAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,9 @@
 		085632B92A2FFBE3000C25DD /* PokeRPGUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokeRPGUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		085632BD2A2FFBE3000C25DD /* PokeRPGUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeRPGUITests.swift; sourceTree = "<group>"; };
 		085632BF2A2FFBE3000C25DD /* PokeRPGUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeRPGUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		085632CC2A30099D000C25DD /* Pokemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pokemon.swift; sourceTree = "<group>"; };
+		088F05742A30C21D00596024 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		4F3865492A340B7B007DF592 /* PokeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,9 +101,10 @@
 			isa = PBXGroup;
 			children = (
 				085632A22A2FFBE0000C25DD /* PokeRPGApp.swift */,
-				085632A42A2FFBE0000C25DD /* ContentView.swift */,
+				4F3865472A340B35007DF592 /* Views */,
 				085632A62A2FFBE3000C25DD /* Assets.xcassets */,
 				085632A82A2FFBE3000C25DD /* Preview Content */,
+				4F3865482A340B5E007DF592 /* Classes */,
 			);
 			path = PokeRPG;
 			sourceTree = "<group>";
@@ -125,6 +132,24 @@
 				085632BF2A2FFBE3000C25DD /* PokeRPGUITestsLaunchTests.swift */,
 			);
 			path = PokeRPGUITests;
+			sourceTree = "<group>";
+		};
+		4F3865472A340B35007DF592 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				085632A42A2FFBE0000C25DD /* ContentView.swift */,
+				088F05742A30C21D00596024 /* HomeScreen.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4F3865482A340B5E007DF592 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				085632CC2A30099D000C25DD /* Pokemon.swift */,
+				4F3865492A340B7B007DF592 /* PokeAPI.swift */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,8 +282,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F38654A2A340B7B007DF592 /* PokeAPI.swift in Sources */,
+				088F05752A30C21D00596024 /* HomeScreen.swift in Sources */,
 				085632A52A2FFBE0000C25DD /* ContentView.swift in Sources */,
 				085632A32A2FFBE0000C25DD /* PokeRPGApp.swift in Sources */,
+				085632CD2A30099D000C25DD /* Pokemon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +455,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -456,6 +485,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
