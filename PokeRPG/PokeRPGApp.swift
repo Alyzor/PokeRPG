@@ -11,7 +11,7 @@ import SwiftUI
 struct PokeRPGApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeScreen()
+            PokeList()
         }
     }
 }

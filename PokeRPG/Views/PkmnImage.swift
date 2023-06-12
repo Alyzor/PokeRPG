@@ -10,14 +10,21 @@ import SwiftUI
 struct PkmnImage: View {
     var imageLink = ""
     var front = true
+    var dex = false
     @State private var pokemonSprite = ""
     
     var body: some View {
         AsyncImage(url:URL(string: pokemonSprite), content: { image in
             if front {
+                if dex {
+                    image.resizable()
+                        .aspectRatio(contentMode:.fit)
+                        .frame(width:75,height:75,alignment: .leading)
+                }else{
                 image.resizable()
                     .aspectRatio(contentMode:.fit)
                     .frame(width:150,height:150,alignment: .leading)
+                }
                 
             }else
             {
@@ -45,9 +52,9 @@ struct PkmnImage: View {
         PokeDataAPI().fetchData(SelUrl: url){
             sprite in
             if front == true{
-                tempSprite = sprite.front_default
+                tempSprite = sprite.sprites.front_default
             }else{
-                tempSprite = sprite.back_default
+                tempSprite = sprite.sprites.back_default
             }
             self.pokemonSprite = tempSprite ?? "placeholder"
         }

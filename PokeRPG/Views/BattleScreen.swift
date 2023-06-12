@@ -66,26 +66,16 @@ struct BattleScreen: View {
             STAB = 1.0
         }
         //verifica o tipo do pokemon que ataca e o que defende, e o bonus a ser utilizado
-        type1DMG = getTypeMultiplier(Type1: ATK.type1, Type2: DEF.type1)
+        type1DMG = getTypeMultiplier(Type1: Move.pType, Type2: DEF.type1)
             
             fourthCalc = thirdCalc*STAB*type1DMG
     
         //verificação de existência de tipos
-        if(ATK.type2 != nil){
-            if(DEF.type2 != nil){
-                type2DMG = getTypeMultiplier(Type1: ATK.type2!, Type2: DEF.type2!)
-                fourthCalc *= type2DMG
-            }
-            else{
-                type2DMG = getTypeMultiplier(Type1: ATK.type2!, Type2: DEF.type1)
-                fourthCalc *= type2DMG
-            }
+        if DEF.type2 != nil{
+            type2DMG = getTypeMultiplier(Type1: Move.pType, Type2: DEF.type2!)
         }
-        else if(DEF.type2 != nil){
-            type2DMG = getTypeMultiplier(Type1: ATK.type1, Type2: DEF.type2!)
-            fourthCalc *= type2DMG
-        }
-        if ATK.type2 != nil{
+        
+        if DEF.type2 != nil{
             switch type1DMG{
             case 2.0:
                 switch type2DMG{
@@ -108,7 +98,16 @@ struct BattleScreen: View {
             case 0:
                 battleReport = "It had no effect..."
             default:
-                battleReport = ""
+                switch type2DMG{
+                case 2.0:
+                    battleReport = "It's Super-Effective!"
+                case 1.0:
+                    battleReport = ""
+                case 0.5:
+                    battleReport = "It's not very effective..."
+                default:
+                    battleReport = "It had no effect..."
+                }
             }
             
         }else{

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeScreen: View {
     @State private var wasClicked = false
+    @State var SelectedView:AnyView?
     var body: some View {
         NavigationView{
         ZStack{
@@ -10,13 +11,17 @@ struct HomeScreen: View {
             VStack{
                 Spacer()
                 Text("PokeRPG").font(.largeTitle).foregroundColor(.black)
-                    .onAppear{ PokeAPI().fetchData(){ pokemon in
-                        for pokemon in pokemon{
-                            print(pokemon.name)
+                    .onAppear{
+                        
+                        let hasStoredData = UserDefaults.standard.bool(forKey: "hasData")
+                        if hasStoredData != true {
+                            SelectedView = AnyView(PokeList())
+                        }else{
+                            SelectedView = AnyView(EmptyView())
                         }
-                    }}
+                    }
                 Spacer()
-                NavigationLink(destination: BattleScreen(), isActive:$wasClicked){EmptyView()}
+                NavigationLink(destination: SelectedView, isActive:$wasClicked){EmptyView()}
                 Button("Get Started!",action:{wasClicked = true
                 }).buttonStyle(.borderedProminent).tint(Color.red)
                 Spacer()

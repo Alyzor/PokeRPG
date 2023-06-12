@@ -8,16 +8,26 @@
 import Foundation
 
 struct PokeData: Codable {
-    var sprites: PokemonSprites
+    var name:String = ""
+    var sprites: PokemonSprites = PokemonSprites()
+    var stats:[PokemonStats] = [PokemonStats]()
 }
 
+struct PokemonStats:Codable, Identifiable{
+    let id = UUID()
+    var base_stat:Int = 0
+    var stat:PokemonStatsD = PokemonStatsD()
+}
+struct PokemonStatsD:Codable{
+    var name:String = ""
+}
 struct PokemonSprites:Codable{
-    var front_default: String
-    var back_default: String
+    var front_default: String = ""
+    var back_default: String = ""
 }
 
 class PokeDataAPI{
-    func fetchData(SelUrl: String, completion:@escaping(PokemonSprites) -> ()){
+    func fetchData(SelUrl: String, completion:@escaping(PokeData) -> ()){
         guard let url = URL(string: SelUrl) else {
             return
         }
@@ -27,7 +37,7 @@ class PokeDataAPI{
             let pokeSprite = try! JSONDecoder().decode(PokeData.self, from: data)
             
             DispatchQueue.main.async{
-                completion(pokeSprite.sprites)
+                completion(pokeSprite)
             }
         }.resume()
     }

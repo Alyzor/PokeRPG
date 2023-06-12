@@ -19,6 +19,8 @@
 		4F38654C2A3420E6007DF592 /* BattleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F38654B2A3420E6007DF592 /* BattleScreen.swift */; };
 		4F38654E2A34B925007DF592 /* PokeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F38654D2A34B924007DF592 /* PokeData.swift */; };
 		4F3865502A34C2CE007DF592 /* PkmnImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F38654F2A34C2CD007DF592 /* PkmnImage.swift */; };
+		4F3865522A3529AF007DF592 /* PokeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3865512A3529A6007DF592 /* PokeList.swift */; };
+		4FB379672A367A9000B27326 /* ListDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB379662A367A9000B27326 /* ListDetail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,8 @@
 		4F38654B2A3420E6007DF592 /* BattleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleScreen.swift; sourceTree = "<group>"; };
 		4F38654D2A34B924007DF592 /* PokeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeData.swift; sourceTree = "<group>"; };
 		4F38654F2A34C2CD007DF592 /* PkmnImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PkmnImage.swift; sourceTree = "<group>"; };
+		4F3865512A3529A6007DF592 /* PokeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeList.swift; sourceTree = "<group>"; };
+		4FB379662A367A9000B27326 /* ListDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +148,8 @@
 				088F05742A30C21D00596024 /* HomeScreen.swift */,
 				4F38654B2A3420E6007DF592 /* BattleScreen.swift */,
 				4F38654F2A34C2CD007DF592 /* PkmnImage.swift */,
+				4F3865512A3529A6007DF592 /* PokeList.swift */,
+				4FB379662A367A9000B27326 /* ListDetail.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -289,9 +295,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F38654A2A340B7B007DF592 /* PokeAPI.swift in Sources */,
+				4FB379672A367A9000B27326 /* ListDetail.swift in Sources */,
 				4F3865502A34C2CE007DF592 /* PkmnImage.swift in Sources */,
 				088F05752A30C21D00596024 /* HomeScreen.swift in Sources */,
 				4F38654C2A3420E6007DF592 /* BattleScreen.swift in Sources */,
+				4F3865522A3529AF007DF592 /* PokeList.swift in Sources */,
 				085632A32A2FFBE0000C25DD /* PokeRPGApp.swift in Sources */,
 				4F38654E2A34B925007DF592 /* PokeData.swift in Sources */,
 				085632CD2A30099D000C25DD /* Pokemon.swift in Sources */,
