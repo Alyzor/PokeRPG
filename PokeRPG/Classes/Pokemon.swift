@@ -7,173 +7,63 @@
 
 import Foundation
 
-struct Pokemon {
-    var Nome = ""
-    var Lvl = 0
-    var HP = 0
-    var ATK = 0
-    var DEF = 0
-    var spATK = 0
-    var spDEF = 0
-    var SPD = 0
-    var type1 = ""
-    var type2:String? = ""
-    var Move1 = Moves()
-    var Move2 = Moves()
-    var Move3 = Moves()
-    var Move4 = Moves()
+struct PokemonTeam: Codable {
+    var Pkmn:[Pokemon] = [Pokemon]()
+}
+struct PokeData: Codable {
+    var name:String = ""
+    var id = 0
+    var sprites: PokemonSprites = PokemonSprites()
+    var stats:[PokemonStats] = [PokemonStats]()
+    var types:[PokemonTypes]? = [PokemonTypes]()
+    var moves:[PokemonMoves] = [PokemonMoves]()
 }
 
-func getTypeMultiplier(Type1:String, Type2:String) -> Double{
-    switch (Type1){
-    case "normal":
-        switch (Type2){
-            case "rock":
-                return 0.5
-            case"ghost":
-                return 0.0
-        default:
-            return 1.0
-        }
-    case"fire":
-        switch (Type2){
-        case "grass","ice", "bug":
-                return 2.0
-            case"fire","water","rock","dragon":
-                return 0.5
-        default:
-            return 1.0
-        }
-    case "water":
-            switch (Type2){
-            case "fire","ground", "rock":
-                    return 2.0
-            case"water","grass","dragon":
-                    return 0.5
-            default:
-                return 1.0
-            }
-    case"electric":
-                switch (Type2){
-                case "water","flying":
-                        return 2.0
-                case"electric","grass","dragon":
-                        return 0.5
-                case "ground":
-                        return 0.0
-                default:
-                    return 1.0
-                }
-    case "grass":
-                 switch (Type2){
-                 case "water","ground", "rock":
-                         return 2.0
-                     case "fire" , "grass" , "poison" , "flying" , "bug" , "dragon":
-                         return 0.5
-                 default:
-                     return 1.0
-                 }
-    case"ice":
-               switch (Type2){
-               case "grass","ground", "flying","dragon":
-                       return 2.0
-                   case "water","ice":
-                       return 0.5
-               default:
-                   return 1.0
-               }
-    case "fighting":
-                    switch (Type2){
-                    case "normal","ice", "rock":
-                            return 2.0
-                    case"poison","flying","psychic","bug":
-                            return 0.5
-                    case "ghost":
-                        return 0.0
-                    default:
-                        return 1.0
-                    }
-    case"poison":
-                  switch (Type2){
-                  case "grass","bug":
-                          return 2.0
-                      case"poison","ground","rock","ghost":
-                          return 0.5
-                  default:
-                      return 1.0
-                  }
-    case "ground":
-                   switch (Type2){
-                   case "fire","electric", "poison", "rock":
-                           return 2.0
-                       case"grass","bug":
-                           return 0.5
-                   case "flying":
-                       return 0.0
-                   default:
-                       return 1.0
-                   }
-    case"flying":
-                    switch (Type2){
-                    case "grass","fighting", "bug":
-                            return 2.0
-                        case "electric","rock":
-                            return 0.5
-                    default:
-                        return 1.0
-                    }
-    case "psychic":
-                   switch (Type2){
-                   case "fighting", "poison":
-                           return 2.0
-                       case"psychic":
-                           return 0.5
-                   default:
-                       return 1.0
-                   }
-    case"bug":
-                switch (Type2){
-                case "grass","poison", "psychic":
-                        return 2.0
-                    case"fire","fighting","flying","ghost":
-                        return 0.5
-                default:
-                    return 1.0
-                }
-    case "rock":
-                switch (Type2){
-                case "fire","flying","ice", "bug":
-                        return 2.0
-                case "fighting","ground":
-                        return 0.5
-                default:
-                    return 1.0
-                }
-    case"ghost":
-                switch (Type2){
-                case "ghost":
-                        return 2.0
-                    case"normal","psychic":
-                        return 0.0
-                default:
-                    return 1.0
-                }
-    case "dragon":
-        
-        switch (Type2){
-        case "dragon":
-                return 2.0
-        default:
-            return 1.0
-        }
-        
-    default:
-        return 1.0
-    }
+struct PokemonMoves:Codable{
+    var move:namedResourceURL = namedResourceURL()
+    var version_group_details:[PkmGroupDetail] = [PkmGroupDetail]()
 }
 
-struct Moves{
-    var Name = ""
-    var Power = 0
-    var pType = ""
+
+struct PkmGroupDetail:Codable{
+    var level_learned_at:Int = 0
+    var move_learn_method:namedResource = namedResource()
+}
+
+struct PokemonTypes:Codable{
+    var type:namedResource = namedResource()
+}
+
+struct PokemonStats:Codable, Hashable{
+    var base_stat:Int = 0
+    var stat:namedResource = namedResource()
+}
+
+struct PokemonSprites:Codable{
+    var front_default: String = ""
+    var back_default: String = ""
+}
+
+struct PokemonResults:Codable{
+    var results:[namedResourceURL]
+}
+
+//LOCAL STORAGE, TOP PART IS FOR API FETCHING
+
+struct Pokemon: Codable, Identifiable{
+    let id = UUID()
+    var Nome:String = "" //
+    var Lvl:Int = 0
+    var HP:Int = 0 //
+    var FullHP:Int = 0 //
+    var ATK:Int = 0 //
+    var DEF:Int = 0 //
+    var spATK:Int = 0 //
+    var spDEF:Int = 0 //
+    var SPD:Int = 0 //
+    var type1:String = "" //
+    var type2:String? = "" //?
+    var MoveList:[Moves] = [Moves]() //
+    var dexNumber:Int = 0 //
+    var imgURL:String = ""
 }

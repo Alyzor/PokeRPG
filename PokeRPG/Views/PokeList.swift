@@ -7,22 +7,20 @@
 
 import SwiftUI
 struct PokeList: View {
-    @State var pokeList = [PokemonEntry]()
+    @State var pokeList = [namedResourceURL]()
    @State var filterText = ""
     var body: some View {
         NavigationView{
             List{
-                ForEach(filterText == "" ? pokeList: pokeList.filter( {
-                    $0.name.contains(filterText.lowercased())} ))
-                { entry in
+                ForEach(pokeList, id:\.self){ entry in
                     HStack{
                         PkmnImage(imageLink: entry.url, front: true, dex:true).frame(maxWidth:75,maxHeight: 75)
-                        NavigationLink("\(entry.name.capitalized)", destination:ListDetail(Surl:entry.url))
+                        NavigationLink("\(entry.name.capitalized)", destination:ListDetail(Surl:entry.url).navigationTitle("\(entry.name.capitalized)'s Stats: "))
                     }
                     
                 }
             }.onAppear{
-                PokeAPI().fetchData(){ pokemon in
+                PokeAPI().fetchDexData(){ pokemon in
                     self.pokeList = pokemon
                 }
             }

@@ -12,15 +12,22 @@ struct ListDetail: View {
     var Surl = ""
     @State var Pkmn:PokeData = PokeData()
     var body: some View {
-        HStack{
-            Text("\(Pkmn.name.capitalized)'s Stats: ")
-            ForEach(Pkmn.stats){stat in
-                Text(stat.stat.name.capitalized + " : " + String(stat.base_stat))
+        VStack{
+            HStack{
+                PkmnImage(imageLink: Surl, front: true)
+                HStack{
+                    VStack(alignment: .leading) {
+                        ForEach(Pkmn.stats, id:\.self) {stats in
+                            Text(stats.stat.name + " : " + String(stats.base_stat))
+                        }
+                    }
+                }
             }
-                
+                Spacer()
             }.onAppear{
-                PokeDataAPI().fetchData(SelUrl: Surl){ pokemon in
+                PokeAPI().fetchPokemonData(SelUrl: Surl){ pokemon in
                     Pkmn = pokemon
+                    
             }
         }
         }}

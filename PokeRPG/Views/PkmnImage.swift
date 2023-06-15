@@ -11,6 +11,7 @@ struct PkmnImage: View {
     var imageLink = ""
     var front = true
     var dex = false
+    var pad = false
     @State private var pokemonSprite = ""
     
     var body: some View {
@@ -20,10 +21,18 @@ struct PkmnImage: View {
                     image.resizable()
                         .aspectRatio(contentMode:.fit)
                         .frame(width:75,height:75,alignment: .leading)
-                }else{
+                }else
+                {
+                    if pad{
+                        image.resizable()
+                            .aspectRatio(contentMode:.fill)
+                            .frame(maxWidth:100,maxHeight:100)
+                        
+                    } else{
                 image.resizable()
                     .aspectRatio(contentMode:.fit)
                     .frame(width:150,height:150,alignment: .leading)
+                    }
                 }
                 
             }else
@@ -49,7 +58,7 @@ struct PkmnImage: View {
     func getSprite(url: String){
         var tempSprite: String?
         
-        PokeDataAPI().fetchData(SelUrl: url){
+        PokeAPI().fetchPokemonData(SelUrl: url){
             sprite in
             if front == true{
                 tempSprite = sprite.sprites.front_default
