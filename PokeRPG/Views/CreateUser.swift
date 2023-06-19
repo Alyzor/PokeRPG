@@ -29,11 +29,14 @@ func getStarter(selectedPokemon:Int, completion:@escaping (Bool) -> ()){
     var startTeam = Pokemon()
     @State var returnSafe = false
     PokeAPI().fetchPokemonData(SelUrl:"https://pokeapi.co/api/v2/pokemon/\(String(selectedPokemon))/"){ pokemon in
-        startTeam.Nome = pokemon.name
+        startTeam.Nome = pokemon.name.capitalized
         startTeam.Lvl = 5
         startTeam.dexNumber = pokemon.id
         startTeam.type1 = pokemon.types![0].type.name
         startTeam.imgURL = "https://pokeapi.co/api/v2/pokemon/\(String(selectedPokemon))"
+        //add ailment list
+        
+        
         if pokemon.types!.count == 2{
             startTeam.type2 = pokemon.types![1].type.name
         }
@@ -45,14 +48,19 @@ func getStarter(selectedPokemon:Int, completion:@escaping (Bool) -> ()){
                 startTeam.FullHP = pStat.base_stat
             case "attack":
                 startTeam.ATK = pStat.base_stat
+                startTeam.permaStats.ATK = pStat.base_stat
             case "defense":
                 startTeam.DEF = pStat.base_stat
+                startTeam.permaStats.DEF = pStat.base_stat
             case "special-attack":
                 startTeam.spATK = pStat.base_stat
+                startTeam.permaStats.spATK = pStat.base_stat
             case "special-defense":
                 startTeam.spDEF = pStat.base_stat
+                startTeam.permaStats.spDEF = pStat.base_stat
             default:
                 startTeam.SPD = pStat.base_stat
+                startTeam.permaStats.SPD = pStat.base_stat
             }
         }
         //get Moves under lv 5
@@ -66,6 +74,7 @@ func getStarter(selectedPokemon:Int, completion:@escaping (Bool) -> ()){
             selMove.Name = mv.move.name
             bgQueue.async(group: group,  execute: {
             PokeAPI().fetchMoveData(MoveURL:mv.move.url){fetchedMove in
+                if fetchedMove.generation.name == "generation-i"{
                 if fetchedMove.power != nil{
                     selMove.Power = fetchedMove.power!}
                 selMove.pType = fetchedMove.type.name
@@ -78,10 +87,20 @@ func getStarter(selectedPokemon:Int, completion:@escaping (Bool) -> ()){
                     selMove.statusDetails.statInflicted = fetchedMove.stat_changes[0].stat.name
                     selMove.statusDetails.target = fetchedMove.target.name
                 }
+                    selMove.ailment = fetchedMove.meta.ailment.name
+                    selMove.ailmentChance = fetchedMove.meta.ailment_chance
+                    selMove.category = fetchedMove.meta.category.name
+                    selMove.healing = fetchedMove.meta.healing
+                    selMove.drain = fetchedMove.meta.drain
+                    selMove.max_hits = fetchedMove.meta.max_hits ?? 0
+                    selMove.min_hits = fetchedMove.meta.min_hits ?? 0
+                    selMove.max_turns = fetchedMove.meta.max_turns ?? 0
+                    selMove.min_turns = fetchedMove.meta.min_turns ?? 0
                 startTeam.MoveList.append(selMove)
                 print(startTeam.MoveList)
                 group.leave()
-                print("added move \(selMove.Name)")
+                    print("added move \(selMove.Name).\(selMove.min_hits)")
+            }
             }
             })
         }

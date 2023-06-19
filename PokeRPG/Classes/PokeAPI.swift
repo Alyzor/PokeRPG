@@ -32,9 +32,9 @@ class PokeAPI{
             
             let pokeSprite = try! JSONDecoder().decode(PokeData.self, from: data)
             
-            DispatchQueue.main.async{
+          //  DispatchQueue.main.async{
                 completion(pokeSprite)
-            }
+            //}
         }.resume()
     }
     

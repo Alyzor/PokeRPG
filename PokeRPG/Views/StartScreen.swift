@@ -30,7 +30,7 @@ struct StartScreen: View {
             }
         }.background(Color.white.edgesIgnoringSafeArea(.all))
             
-        }
+        }.navigationBarHidden(true)
     }
 }
 

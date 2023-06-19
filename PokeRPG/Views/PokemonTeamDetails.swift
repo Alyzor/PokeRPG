@@ -45,7 +45,6 @@ struct PokemonTeamDetails: View {
 struct MoveView:View{
     var selMoves:[Moves] = [Moves]()
     var body: some View{
-        
         HStack{
             Text("Moves").font(.title).bold().padding()
             Spacer()

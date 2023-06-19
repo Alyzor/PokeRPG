@@ -17,6 +17,20 @@ struct DMove:Codable{
     var stat_changes:[spMove] = [spMove]()
     var damage_class:namedResource = namedResource()
     var target:namedResource = namedResource()
+    var generation:namedResource = namedResource()
+    var meta:AilmentDetails = AilmentDetails()
+}
+
+struct AilmentDetails:Codable{
+    var ailment:namedResource = namedResource()
+    var ailment_chance:Int = 0
+    var category: namedResource = namedResource()
+    var healing:Int = 0
+    var drain:Int = 0
+    var max_hits:Int? = 0
+    var max_turns:Int? = 0
+    var min_hits:Int? = 0
+    var min_turns:Int? = 0
 }
 
 struct spMove:Codable{
@@ -36,6 +50,15 @@ struct Moves:Codable, Identifiable{
     var maxPP:Int = 0
     var dmgOrBuff:String = ""
     var statusDetails:statChDetail = statChDetail()
+    var ailment:String = ""
+    var ailmentChance:Int = 0
+    var category:String = ""
+    var healing:Int = 0
+    var drain:Int = 0
+    var max_hits:Int = 0
+    var min_hits:Int = 0
+    var max_turns:Int = 0
+    var min_turns:Int = 0
 }
 
 struct statChDetail:Codable{
