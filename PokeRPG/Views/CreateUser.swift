@@ -7,18 +7,31 @@
 
 import SwiftUI
 
+extension Binding where Value == String {
+    func max(_ limit: Int) -> Self {
+        if self.wrappedValue.count > limit {
+            DispatchQueue.main.async {
+                self.wrappedValue = String(self.wrappedValue.dropLast())
+            }
+        }
+        return self
+    }
+}
+
 struct CreateName: View {
     @State var gotoStarter = false
     @AppStorage("Name") var userName = ""
     @AppStorage("Gender") var userGender = ""
+    @AppStorage("userWallet") var userWallet = 0
     var body: some View {
         VStack{
             Text("I see... What is your name?")
             Image("pkmn"+userGender).resizable().scaledToFill().frame(width:160,height:160).border(.gray).background(.red.opacity(0.6))
             Form{
-                TextField("",text:$userName)
+                TextField("Username",text:self.$userName.max(16))
             }
             Button("Save Character"){
+                userWallet = 20
                 gotoStarter = true
             }.disabled(userName == "")
             NavigationLink("", destination:SelectStarter(), isActive: $gotoStarter)
@@ -34,6 +47,7 @@ func getStarter(selectedPokemon:Int, completion:@escaping (Bool) -> ()){
         startTeam.dexNumber = pokemon.id
         startTeam.type1 = pokemon.types![0].type.name
         startTeam.imgURL = "https://pokeapi.co/api/v2/pokemon/\(String(selectedPokemon))"
+        startTeam.xpWon = pokemon.base_experience
         //add ailment list
         
         

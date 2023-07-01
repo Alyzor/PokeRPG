@@ -17,6 +17,7 @@ struct PokeData: Codable {
     var stats:[PokemonStats] = [PokemonStats]()
     var types:[PokemonTypes]? = [PokemonTypes]()
     var moves:[PokemonMoves] = [PokemonMoves]()
+    var base_experience: Int = 0
 }
 
 struct PokemonMoves:Codable{
@@ -69,6 +70,9 @@ struct Pokemon: Codable, Identifiable{
     var AilmentList:Ailments = Ailments()
     var dexNumber:Int = 0 //
     var imgURL:String = ""
+    var currentXP:Int = 0
+    var xpWon:Int = 0
+    var wasUsed:Bool = false
 }
 
 struct Stages:Codable {

@@ -57,6 +57,7 @@ struct TeamViewer: View {
 struct LocationLister: View {
     var pokemonTeam = TeamUtils().getTeam()
     @State var gotoBattle = false
+    @State var sentPokemon:Int = 0
     var body: some View {
         VStack{
             Header()
@@ -65,9 +66,22 @@ struct LocationLister: View {
                     Spacer()
                     Text("Vai pá gerra.")
                     Button("Torrada"){
-                        gotoBattle = true
+                        for pkmn in pokemonTeam.Pkmn.indices{
+                            if pokemonTeam.Pkmn[pkmn].HP > 0{
+                                sentPokemon = pkmn
+                                gotoBattle = true
+                                break
+                            }
+                            else{
+                                sentPokemon = -1
+                            }
+                        }
+                        if sentPokemon == -1{
+                            Alert(title: Text("No Pokemon left!"), message: Text("You don't have any Pokemon capable to fight!"), dismissButton: .default(Text("OK!"))
+                            )
+                        }
                     }
-                    NavigationLink("", destination:BattleScreen(PokemonUser:pokemonTeam.Pkmn[0], PokemonBot:pokemonTeam.Pkmn[0]), isActive: $gotoBattle)
+                    NavigationLink("", destination:BattleScreen(viewModel:BattleUtils(team1:pokemonTeam, team2:pokemonTeam)), isActive: $gotoBattle)
                     Spacer()
                 }
                 Spacer()
@@ -112,6 +126,7 @@ struct Shop: View {
 struct Header: View{
     @AppStorage("Name") var userName = "PlaceHolder"
     @AppStorage("Gender") var Gender = "Boy"
+    @AppStorage("userWallet") var userWallet = 0
     @State var gotoSettings=false
     var body: some View{
         VStack(spacing:0){
@@ -127,8 +142,10 @@ struct Header: View{
                         Image("pkmn\(Gender)").resizable().frame(width: 75, height: 75)
                         
                     }
+                    VStack{
                     Text(userName).font(.system(size:12).bold())
-                    
+                    Text("\(String(userWallet)) $").font(.system(size:12).bold())
+                    }
                     NavigationLink("", destination:SettingsView(), isActive: $gotoSettings)
                 }
                 Spacer()
