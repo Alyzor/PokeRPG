@@ -32,9 +32,29 @@ class TeamUtils{
         }
     }
     
+    
+    func getBag()-> Bag{
+        let defaults = UserDefaults.standard
+        
+        let existingBag = defaults.object(forKey: "userBag") as? Data ?? Data()
+        
+        if let bag = try? JSONDecoder().decode(Bag.self, from: existingBag){
+            return bag
+        }else{
+            return Bag()
+        }
+    }
+    
+    func saveBag(userBag:Bag){
+        let defaults = UserDefaults.standard
+        let saveBag = try? JSONEncoder().encode(userBag)
+        defaults.set(saveBag, forKey: "userBag")
+    }
+    
     func deleteSave(){
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: "userTeam")
+        defaults.removeObject(forKey: "userBag")
     }
     
 }

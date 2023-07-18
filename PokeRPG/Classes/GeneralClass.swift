@@ -16,3 +16,4 @@ struct namedResourceURL:Codable, Hashable{
     var url:String = ""
 }
     
+

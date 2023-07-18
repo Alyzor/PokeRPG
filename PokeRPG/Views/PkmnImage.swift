@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct PkmnImage: View {
-    var imageLink = ""
+    var imageLink:String = ""
     var front = true
     var dex = false
     var pad = false
@@ -20,7 +21,7 @@ struct PkmnImage: View {
                 if dex {
                     image.resizable()
                         .aspectRatio(contentMode:.fit)
-                        .frame(width:75,height:75,alignment: .leading)
+                        .frame(width:50,height:50,alignment: .leading)
                 }else
                 {
                     if pad{
@@ -67,11 +68,5 @@ struct PkmnImage: View {
             }
             self.pokemonSprite = tempSprite ?? "placeholder"
         }
-    }
-}
-
-struct PkmnImage_Previews: PreviewProvider {
-    static var previews: some View {
-        PkmnImage()
     }
 }

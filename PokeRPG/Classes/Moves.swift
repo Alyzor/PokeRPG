@@ -9,7 +9,7 @@ import Foundation
 
 
 struct DMove:Codable{
-    var accuracy:Int = 0
+    var accuracy:Int? = 0
     var name:String = ""
     var power:Int? = 0
     var pp:Int = 0

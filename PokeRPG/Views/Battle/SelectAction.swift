@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SelectAction: View {
-    @StateObject var viewModel = BattleUtils(team1:PokemonTeam(), team2:PokemonTeam())
+    @StateObject var viewModel = BattleUtils(team1:PokemonTeam(), team2:PokemonTeam(), userPkmNo:0)
     var body: some View{
         VStack{
             HStack{
@@ -17,6 +17,7 @@ struct SelectAction: View {
                 }.frame(maxWidth:.infinity, maxHeight:.infinity).disabled(viewModel.enableBtns)
                 Divider()
                 Button("Bag"){
+                    viewModel.gotoBag = true
                 }.frame(maxWidth:.infinity, maxHeight:.infinity).disabled(viewModel.enableBtns)
             }
             Divider()
@@ -33,7 +34,5 @@ struct SelectAction: View {
                 }.frame(maxWidth:.infinity, maxHeight:.infinity).disabled(viewModel.enableBtns)
             }
         }.background(.red).foregroundColor(.white).cornerRadius(5).padding()
-        NavigationLink("", destination:TeamViewer(), isActive: $viewModel.gotoTeam)
-        NavigationLink("", destination:HomeScreen(), isActive: $viewModel.goEscape)
     }
 }

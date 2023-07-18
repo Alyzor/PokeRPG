@@ -9,7 +9,7 @@ import SwiftUI
 
 struct showUserMoves: View {
     
-    @StateObject var viewModel = BattleUtils(team1:PokemonTeam(), team2:PokemonTeam())
+    @StateObject var viewModel = BattleUtils(team1:PokemonTeam(), team2:PokemonTeam(), userPkmNo:0)
     @State var move1 = "Locked"
     @State var move2 = "Locked"
     @State var move3 = "Locked"

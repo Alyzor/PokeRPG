@@ -8,19 +8,22 @@
 import SwiftUI
 
 struct PokemonTeamDetails: View {
-    var selPkmn:Pokemon = Pokemon()
+    @State var selPkmn:Pokemon = Pokemon()
+    @State var currentXP:Float = 0
+    @State var maxXP:Float = 0
     var body: some View {
         VStack{
             HStack(spacing:0){
                 VStack{
                     PkmnImage(imageLink:selPkmn.imgURL, front:true, dex:false, pad:true)
+                    Text("Level: \(selPkmn.Lvl)")
                 Text("#\(String(format: "%03d", selPkmn.dexNumber))/#151")
                 }
                 VStack{
                     Text("Main stats").font(.title3).bold().padding()
                     HStack{
                         VStack(alignment: .leading, spacing:0){
-                        Text("HP: \(selPkmn.HP) / \(selPkmn.FullHP)")
+                            Text("HP: \(selPkmn.HP) / \(selPkmn.permaStats.HP)")
                         Text("ATK: \(selPkmn.ATK)")
                         Text("DEF: \(selPkmn.DEF)")
                         }.padding()
@@ -33,9 +36,17 @@ struct PokemonTeamDetails: View {
                     }.background(.gray.opacity(0.2)).frame(maxHeight:100).padding()
                 }
             }
+            HStack{
+                Spacer()
+                Text("XP:")
+                ProgressView(value:currentXP, total:maxXP)
+                Spacer()
+            }
             Divider()
             MoveView(selMoves:selPkmn.MoveList)
-            Spacer()
+        }.onAppear{
+            currentXP = Float(selPkmn.currentXP - Int(pow(Double(selPkmn.Lvl - 1), 3)))
+            maxXP = Float(pow(Double(selPkmn.Lvl), 3) - pow(Double(selPkmn.Lvl - 1), 3))
         }
         .background(.gray.opacity(0.1))
         .navigationBarTitle("\(selPkmn.Nome.capitalized)'s details")
@@ -45,6 +56,7 @@ struct PokemonTeamDetails: View {
 struct MoveView:View{
     var selMoves:[Moves] = [Moves]()
     var body: some View{
+        ScrollView{
         HStack{
             Text("Moves").font(.title).bold().padding()
             Spacer()
@@ -65,6 +77,7 @@ struct MoveView:View{
             Divider()
         }
         }.background(.white).cornerRadius(15)
+    }
     }
 }
 
