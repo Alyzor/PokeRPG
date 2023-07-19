@@ -63,10 +63,6 @@ final class SavePokemon{
                 group.enter()
                 bgQueue.async(group: group,  execute: {
                 PokeAPI().fetchMoveData(MoveURL:mv.move.url){fetchedMove in
-                    if fetchedMove.damage_class.name != "damage" || fetchedMove.damage_class.name != "ailment"{
-                        group.leave()
-                    }else
-                    {
                     if fetchedMove.generation.name == "generation-i"{
                     if fetchedMove.power != nil{
                         selMove.Power = fetchedMove.power!}
@@ -99,7 +95,6 @@ final class SavePokemon{
                     }else{
                         group.leave()
                     }
-                }
                 }
                 })
             }

@@ -8,7 +8,7 @@
 import SwiftUI
 import SDWebImageSwiftUI
 struct Shop: View {
-    @StateObject var vModel = HomeScreenViewModel(team:PokemonTeam())
+    @StateObject var vModel = HomeScreenViewModel(team:PokemonTeam(),PC:PokemonTeam())
     @State var showAlert = false
     var body: some View {
         VStack(spacing:0){

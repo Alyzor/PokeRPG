@@ -11,8 +11,9 @@ import SwiftUI
 
 final class HomeScreenViewModel:ObservableObject{
     
-    init(team:PokemonTeam) {
+    init(team:PokemonTeam, PC:PokemonTeam) {
         self.UserTeam = team
+        self.userPC = PC
     }
     
     @Published var UserTeam:PokemonTeam = PokemonTeam()
@@ -24,6 +25,7 @@ final class HomeScreenViewModel:ObservableObject{
     @Published var healing = false
     @Published var selPkm = 0
     @Published var userBag:Bag = TeamUtils().getBag()
+    @Published var userPC:PokemonTeam = PokemonTeam()
     @AppStorage("userWallet") var wallet = 0
     
     func checkFaint(){

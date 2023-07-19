@@ -9,13 +9,15 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct Hospital: View {
-    @StateObject var vModel = HomeScreenViewModel(team:PokemonTeam())
+    @StateObject var vModel = HomeScreenViewModel(team:PokemonTeam(),PC:PokemonTeam())
         @AppStorage("userWallet") var wallet = 0
     @State var noMoney = false
+    @State var gotoPC = false
     var body: some View {
         VStack{
             Header()
-            HStack{Spacer()
+            HStack{
+                Spacer()
                 VStack{
                     Spacer()
                     Text("Heal your team!\n(5$ needed)")
@@ -36,11 +38,15 @@ struct Hospital: View {
                     .alert(isPresented:$noMoney){
                         Alert(title: Text("You don't have enough money!"), dismissButton: .default(Text("OK")))
                     }.disabled(vModel.healing)
+                    Button("Check PC"){
+                        gotoPC = true
+                    }
                     Spacer()
                 }
                 Spacer()
             }.background(.gray.opacity(0.1))
             Spacer()
+            NavigationLink("", destination:UserPC(vModel:vModel), isActive: $gotoPC)
         }
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct FightView: View {
-    @StateObject var vModel = HomeScreenViewModel(team:PokemonTeam())
+    @StateObject var vModel = HomeScreenViewModel(team:PokemonTeam(), PC:PokemonTeam())
     @AppStorage("Gender") var gender = ""
     var body: some View {
         VStack{

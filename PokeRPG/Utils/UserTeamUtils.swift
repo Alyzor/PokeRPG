@@ -19,7 +19,24 @@ class TeamUtils{
     }
     
     //fetches team from UserDefaults, saved in a JSON file
+    func getUserPC() -> PokemonTeam{
+        let defaults = UserDefaults.standard
+        
+        let existingTeam = defaults.object(forKey: "userPC") as? Data ?? Data()
+        
+        if let Team = try? JSONDecoder().decode(PokemonTeam.self, from: existingTeam){
+            return Team
+        }else{
+            return PokemonTeam()
+        }
+    }
     
+    func saveUserPC(Team:PokemonTeam){
+        let defaults = UserDefaults.standard
+        let saveTeam = try? JSONEncoder().encode(Team)
+        defaults.set(saveTeam, forKey: "userPC")
+    }
+        
     func getTeam()-> PokemonTeam{
         let defaults = UserDefaults.standard
         

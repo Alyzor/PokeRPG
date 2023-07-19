@@ -9,7 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct BagViewer: View {
-    @StateObject var vModel = HomeScreenViewModel(team:PokemonTeam())
+    @StateObject var vModel = HomeScreenViewModel(team:PokemonTeam(), PC:PokemonTeam())
     var body: some View {
         VStack(spacing:0){
             Header()

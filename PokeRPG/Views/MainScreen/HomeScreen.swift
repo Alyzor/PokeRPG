@@ -9,7 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct HomeScreen: View {
-    @StateObject var vModel = HomeScreenViewModel(team:TeamUtils().getTeam())
+    @StateObject var vModel = HomeScreenViewModel(team:TeamUtils().getTeam(), PC:TeamUtils().getUserPC())
     @State var selectedView = 2
     var body: some View {
         TabView(selection:$selectedView){

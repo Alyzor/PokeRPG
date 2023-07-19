@@ -40,7 +40,7 @@ struct SwitchPokemon: View {
                         } label: {
                             Image(systemName: "arrow.up")
                             Text("Send to battle")
-                        }.tint(.yellow).disabled(vModel.userPkmNo == pkm)
+                        }.tint(.yellow).disabled(vModel.userPkmNo == pkm || vModel.UserTeam.Pkmn[pkm].HP == 0)
                     }
                     
             }

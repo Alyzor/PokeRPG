@@ -66,9 +66,6 @@ final class BattleUtils:ObservableObject{
             group.enter()
             bgQueue.async(group: group,  execute: {
                 PokeAPI().fetchMoveData(MoveURL:mv.move.url){fetchedMove in
-                    if fetchedMove.damage_class.name != "damage" || fetchedMove.damage_class.name != "ailment" {
-                        group.leave()
-                    }else{
                     if fetchedMove.generation.name == "generation-i"{
                         if fetchedMove.power != nil{
                             selMove.Power = fetchedMove.power!}
@@ -98,7 +95,6 @@ final class BattleUtils:ObservableObject{
                     }else{
                         group.leave()
                     }
-                }
                 }
                 })
         }
@@ -161,6 +157,19 @@ final class BattleUtils:ObservableObject{
                     if UserTeam.Pkmn.count < 6{
                         UserTeam.Pkmn.append(BotTeam.Pkmn[botPkmNo])
                         battleReport = "It's in! You caught a \(BotTeam.Pkmn[botPkmNo].Nome)!"
+                        BotTeam.Pkmn[botPkmNo].HP = 0
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+                            if hasActivePokemon(userFaint: false){
+                                replaceBot()
+                            }else{
+                                userWin()
+                            }
+                        }
+                    }else{
+                        var userPC = TeamUtils().getUserPC()
+                        userPC.Pkmn.append(BotTeam.Pkmn[botPkmNo])
+                        battleReport = "You caught a \(BotTeam.Pkmn[botPkmNo].Nome)! It's in your PC!"
+                        TeamUtils().saveUserPC(Team: userPC)
                         BotTeam.Pkmn[botPkmNo].HP = 0
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1){
                             if hasActivePokemon(userFaint: false){
@@ -293,6 +302,72 @@ final class BattleUtils:ObservableObject{
         }
     }
     
+    func getMoveCategory(Move:Moves, target:Bool){
+        switch Move.category{
+        case "damage":
+            if target == true{
+                BotTeam.Pkmn[botPkmNo].HP -= CalcularDMG(ATK: UserTeam.Pkmn[userPkmNo], DEF: BotTeam.Pkmn[botPkmNo], Move:Move)
+            }else{
+                UserTeam.Pkmn[userPkmNo].HP -= CalcularDMG(ATK:BotTeam.Pkmn[botPkmNo], DEF:UserTeam.Pkmn[userPkmNo], Move:Move)
+            }
+        case "ailment":
+            activateAilment(move: Move, userSent: target)
+        case "net-good-stats":
+            checkStatInflicted(statInflicted: Move.statusDetails, target:target)
+        case "heal":
+            if target == true{
+                UserTeam.Pkmn[userPkmNo].HP += (UserTeam.Pkmn[userPkmNo].HP*(Move.healing*100))
+            }else{
+                BotTeam.Pkmn[botPkmNo].HP += (BotTeam.Pkmn[botPkmNo].HP*(Move.healing*100))
+            }
+        case "damage+ailment":
+            if target == true{
+                BotTeam.Pkmn[botPkmNo].HP -= CalcularDMG(ATK: UserTeam.Pkmn[userPkmNo], DEF: BotTeam.Pkmn[botPkmNo], Move:Move)
+                activateAilment(move: Move, userSent: target)
+            }else{
+                    UserTeam.Pkmn[userPkmNo].HP -= CalcularDMG(ATK:BotTeam.Pkmn[botPkmNo], DEF:UserTeam.Pkmn[userPkmNo], Move:Move)
+                activateAilment(move: Move, userSent: target)
+            }
+        case "damage+lower":
+            if target == true{
+                BotTeam.Pkmn[botPkmNo].HP -= CalcularDMG(ATK: UserTeam.Pkmn[userPkmNo], DEF: BotTeam.Pkmn[botPkmNo], Move:Move)
+                checkStatInflicted(statInflicted: Move.statusDetails, target:target)
+            }else{
+                UserTeam.Pkmn[userPkmNo].HP -= CalcularDMG(ATK:BotTeam.Pkmn[botPkmNo], DEF:UserTeam.Pkmn[userPkmNo], Move:Move)
+                checkStatInflicted(statInflicted: Move.statusDetails, target:target)
+            }
+        case "damage+raise":
+            if target == true{
+                BotTeam.Pkmn[botPkmNo].HP -= CalcularDMG(ATK: UserTeam.Pkmn[userPkmNo], DEF: BotTeam.Pkmn[botPkmNo], Move:Move)
+                checkStatInflicted(statInflicted: Move.statusDetails, target:target)
+            }else{
+                UserTeam.Pkmn[userPkmNo].HP -= CalcularDMG(ATK:BotTeam.Pkmn[botPkmNo], DEF:UserTeam.Pkmn[userPkmNo], Move:Move)
+                checkStatInflicted(statInflicted: Move.statusDetails, target:target)
+            }
+        case "damage+heal":
+            var dmg = 0
+            if target == true{
+                dmg = CalcularDMG(ATK: UserTeam.Pkmn[userPkmNo], DEF: BotTeam.Pkmn[botPkmNo], Move:Move)
+                BotTeam.Pkmn[botPkmNo].HP -= dmg
+                UserTeam.Pkmn[userPkmNo].HP += (dmg*(Move.healing*100))
+            }else{
+                dmg = CalcularDMG(ATK:BotTeam.Pkmn[botPkmNo], DEF:UserTeam.Pkmn[userPkmNo], Move:Move)
+                UserTeam.Pkmn[userPkmNo].HP -= dmg
+                BotTeam.Pkmn[botPkmNo].HP += (dmg*(Move.healing*100))
+            }
+        case "ohko":
+            if target == true{
+                BotTeam.Pkmn[botPkmNo].HP = 0
+            }
+            else{
+                UserTeam.Pkmn[userPkmNo].HP = 0
+            }
+        case "unique":
+            print("no time to implement")
+        default:
+            print("dead end")
+        }
+    }
     
     //battle Funcs
     
@@ -307,19 +382,15 @@ final class BattleUtils:ObservableObject{
         if userFirst || bMove.statusDetails.target == "specific-move"{
             battleReport = "\(UserTeam.Pkmn[userPkmNo].Nome) used \(selMove.Name)!"
             DispatchQueue.main.asyncAfter(deadline: .now()+1){ [self] in
-                if self.GetATKType(Move: selMove){
                     if selMove.min_hits == 0{
-                        self.BotTeam.Pkmn[self.botPkmNo].HP -= self.CalcularDMG(ATK: self.UserTeam.Pkmn[self.userPkmNo], DEF: BotTeam.Pkmn[botPkmNo], Move:selMove)
+                        self.getMoveCategory(Move: selMove, target: true)
                     }
                     else{
                         let rand = Int.random(in: selMove.min_hits...selMove.max_hits)
                         for _ in 1...rand {
-                            BotTeam.Pkmn[botPkmNo].HP -= CalcularDMG(ATK: UserTeam.Pkmn[userPkmNo], DEF: BotTeam.Pkmn[botPkmNo], Move:selMove)
+                            self.getMoveCategory(Move: selMove, target: true)
                         }
                     }
-                }else{
-                    checkStatInflicted(statInflicted: selMove.statusDetails, target:true)
-                }
                 if verifyFaint(){
                     group.leave()
                 }
@@ -327,20 +398,16 @@ final class BattleUtils:ObservableObject{
                     DispatchQueue.main.asyncAfter(deadline: .now()+1){
                         battleReport = "\(BotTeam.Pkmn[botPkmNo].Nome) used \(bMove.Name)!"
                         DispatchQueue.main.asyncAfter(deadline: .now()+1){
-                            if GetATKType(Move: bMove){
                                 if bMove.min_hits == 0{
-                                    UserTeam.Pkmn[userPkmNo].HP -= CalcularDMG(ATK:BotTeam.Pkmn[botPkmNo], DEF:UserTeam.Pkmn[userPkmNo], Move:bMove)
+                                    getMoveCategory(Move: bMove, target: false)
                                 }
                                 else{
                                     let rand = Int.random(in: bMove.min_hits...bMove.max_hits)
                                     for _ in 1...rand {
-                                        UserTeam.Pkmn[userPkmNo].HP -= CalcularDMG(ATK:BotTeam.Pkmn[botPkmNo], DEF:UserTeam.Pkmn[userPkmNo], Move:bMove)
+                                        getMoveCategory(Move: bMove, target: false)
                                     }
                                     
                                 }
-                            }else{
-                                checkStatInflicted(statInflicted: bMove.statusDetails, target:false)
-                            }
                             group.leave()
                         }
                     }
@@ -350,18 +417,14 @@ final class BattleUtils:ObservableObject{
         else{
             battleReport = "\(BotTeam.Pkmn[botPkmNo].Nome) used \(bMove.Name)!"
             DispatchQueue.main.asyncAfter(deadline: .now()+1){ [self] in
-                if GetATKType(Move: bMove){
                     if bMove.min_hits == 0{
-                        UserTeam.Pkmn[userPkmNo].HP -= CalcularDMG(ATK:BotTeam.Pkmn[botPkmNo], DEF:UserTeam.Pkmn[userPkmNo], Move:bMove)
+                        self.getMoveCategory(Move: bMove, target: false)
                     }else{
                         let rand = Int.random(in: bMove.min_hits...bMove.max_hits)
                         for _ in 1...rand {
-                            UserTeam.Pkmn[userPkmNo].HP -= CalcularDMG(ATK:BotTeam.Pkmn[botPkmNo], DEF:UserTeam.Pkmn[userPkmNo], Move:bMove)
+                            self.getMoveCategory(Move: bMove, target: false)
                         }
                     }
-                }else{
-                    self.checkStatInflicted(statInflicted: bMove.statusDetails, target:false)
-                }
                 if self.verifyFaint(){
                     group.leave()
                 }
@@ -369,19 +432,15 @@ final class BattleUtils:ObservableObject{
                     DispatchQueue.main.asyncAfter(deadline: .now()+1){ [self] in
                         battleReport = "\(UserTeam.Pkmn[userPkmNo].Nome) used \(selMove.Name)!"
                         DispatchQueue.main.asyncAfter(deadline: .now()+1){ [self] in
-                            if self.GetATKType(Move: selMove){
                                 if selMove.min_hits == 0{
-                                    BotTeam.Pkmn[botPkmNo].HP -= CalcularDMG(ATK: UserTeam.Pkmn[userPkmNo], DEF: BotTeam.Pkmn[botPkmNo], Move:selMove)
+                                    self.getMoveCategory(Move: selMove, target: true)
                                 }
                                 else{
                                     let rand = Int.random(in: selMove.min_hits...selMove.max_hits)
                                     for _ in 1...rand {
-                                        BotTeam.Pkmn[botPkmNo].HP -= CalcularDMG(ATK: UserTeam.Pkmn[userPkmNo], DEF: BotTeam.Pkmn[botPkmNo], Move:selMove)
+                                        self.getMoveCategory(Move: selMove, target: true)
                                     }
                                 }
-                            }else{
-                                self.checkStatInflicted(statInflicted: selMove.statusDetails, target:true)
-                            }
                             group.leave()
                         }
                     }
