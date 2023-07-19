@@ -369,8 +369,6 @@ final class BattleUtils:ObservableObject{
         }
     }
     
-    //battle Funcs
-    
     func startATK(selMove:Moves) {
         UserTeam.Pkmn[userPkmNo].wasUsed = true
         changeBtnState(state: true)
